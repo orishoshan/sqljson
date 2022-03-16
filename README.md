@@ -13,7 +13,7 @@ type UserData struct {
 // Your SQL model, in this example used with GORM.
 type Model struct {
 	ID       uint                    `gorm:"primarykey"`
-	UserData autojson.JSON[UserData] // Use the JSON type with UserData, your data struct, as a type parameter.
+	UserData sqljson.JSON[UserData] // Use the JSON type with UserData, your data struct, as a type parameter.
 }
 
 
@@ -21,7 +21,7 @@ func main() {
   db, _ := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
   user := UserData{Name: "Beautiful Name"}
   // INSERT INTO `models` (`user_data`) VALUES ("{\"name\":\"user\"}") RETURNING `id`
-  db.Save(&Model{UserData: autojson.From(user)})
+  db.Save(&Model{UserData: sqljson.From(user)})
   
   modelFromDb := Model{}
   db.First(&modelFromDb)
