@@ -25,6 +25,6 @@ func main() {
   
   modelFromDb := Model{}
   db.First(&modelFromDb)
-  println(m.UserData.Item.Name) // "Beautiful Name"
+  println(modelFromDb.UserData.Item.Name) // "Beautiful Name"
 }
 ```
