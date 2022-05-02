@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"reflect"
 )
 
 type JSON[T any] struct {
@@ -25,6 +26,13 @@ func (j *JSON[T]) Scan(value interface{}) error {
 }
 
 func (j JSON[T]) Value() (driver.Value, error) {
+	itemValue := reflect.ValueOf(j.Item)
+	switch itemValue.Kind() {
+	case reflect.Chan, reflect.Func, reflect.Map, reflect.Pointer, reflect.UnsafePointer, reflect.Interface, reflect.Slice:
+		if itemValue.IsNil() {
+			return nil, nil
+		}
+	}
 	return json.Marshal(j.Item)
 }
 
